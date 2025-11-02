@@ -50,7 +50,7 @@ fn load_config(path: &str) -> Result<Config, Box<dyn Error>> {
 
 fn main() {
     let now = Local::now();
-    let now_formatted = format!("{}", now.format("%Y-%m-%d_%H:%M:%S"));
+    let now_formatted = format!("{}", now.format("%Y-%m-%d %H:%M:%S"));
 
     let config_path = "config.toml";
     let config = match load_config(&config_path) {
@@ -87,7 +87,7 @@ fn main() {
         let output = match Command::new("/usr/bin/apt-get").args(["update", "-y"]).output() {
             Ok(output) => output,
             Err(error) => {
-                logger::error!("{}\n{}\n{:?}\n{}", now_formatted, start, error, end);
+                logger::error!("{}\n{:?}\n{}", start, error, end);
                 exit(1);
             }
         };
@@ -107,7 +107,7 @@ fn main() {
             .join("\n");
             
             if last_20.is_empty() {
-                logger::error!("{}\n{}\n{:?}\n{}", now_formatted, start, "stdout is empty", end);
+                logger::error!("{}\n{:?}\n{}", start, "stdout is empty", end);
                 exit(1);
             } else {
                 format!("STDOUT last 20 lines:\n{}", last_20)
@@ -148,7 +148,7 @@ fn main() {
         let output = match Command::new("/usr/bin/apt-get").args(["upgrade", "-y"]).output() {
             Ok(output) => output,
             Err(error) => {
-                logger::error!("{}\n{}\n{:?}\n{}", now_formatted, start, error, end);
+                logger::error!("{}\n{:?}\n{}", start, error, end);
                 exit(1);
             }
         };
@@ -168,7 +168,7 @@ fn main() {
             .join("\n");
             
             if last_20.is_empty() {
-                logger::error!("{}\n{}\n{:?}\n{}", now_formatted, start, "stdout is empty", end);
+                logger::error!("{}\n{:?}\n{}", start, "stdout is empty", end);
                 exit(1);
             } else {
                 format!("STDOUT last 20 lines:\n{}", last_20)
@@ -209,7 +209,7 @@ fn main() {
         let output = match Command::new("/usr/bin/apt-get").args(["full-upgrade", "-y"]).output() {
             Ok(output) => output,
             Err(error) => {
-                logger::error!("{}\n{}\n{:?}\n{}", now_formatted, start, error, end);
+                logger::error!("{}\n{:?}\n{}", start, error, end);
                 exit(1);
             }
         };
@@ -229,7 +229,7 @@ fn main() {
             .join("\n");
             
             if last_20.is_empty() {
-                logger::error!("{}\n{}\n{:?}\n{}", now_formatted, start, "stdout is empty", end);
+                logger::error!("{}\n{:?}\n{}", start, "stdout is empty", end);
                 exit(1);
             } else {
                 format!("STDOUT last 20 lines:\n{}", last_20)
@@ -265,7 +265,7 @@ fn main() {
     };
 
 
-    println!("{}{}{}\n{}\n{}\n{}\n{}\n{}", now_formatted, "Update / upgrade report for ", config.machine_name, apt_update_message, "", apt_upgrade_message, "", apt_full_upgrade_message);
+    println!("{}{}\n{}\n{}\n{}\n{}\n{}", "Update / upgrade report for ", config.machine_name, apt_update_message, "", apt_upgrade_message, "", apt_full_upgrade_message);
 
     sleep(Duration::from_secs(30));
     exit(0);
