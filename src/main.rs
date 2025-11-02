@@ -5,9 +5,56 @@ use std::process::Command;
 use std::process::exit;
 use std::thread::sleep;
 use std::time::Duration;
+use std::fs::read_to_string;
+use std::error::Error;
 use chrono::Local;
+use serde::Deserialize;
+
+#[derive(Deserialize)]
+#[serde(tag = "type")]
+enum ConfigNetworkFormat {
+    PlainText,
+    JsonText { field: String },
+}
+
+impl From<ConfigNetworkFormat> for NetworkFormat {
+    fn from(v: ConfigNetworkFormat) -> Self {
+        match v {
+            ConfigNetworkFormat::PlainText => NetworkFormat::PlainText,
+            ConfigNetworkFormat::JsonText { field } => NetworkFormat::JsonText { field },
+        }
+    }
+}
+
+#[derive(Deserialize)]
+struct Config {
+    terminal_logs: bool,
+    terminal_log_lvl: String,
+    wasm_logging: bool,
+    file_logs: bool,
+    file_log_lvl: String,
+    log_file_path: String,
+    network_logs: bool,
+    network_log_lvl: String,
+    network_endpoint_url: String,
+    network_format: ConfigNetworkFormat,
+    debug_extra: bool,
+    async_logging: bool,
+    machine_name: String,
+}
+
+fn load_config(path: &str) -> Result<Config, Box<dyn Error>> {
+    let raw = read_to_string(path)?;
+    return Ok(toml::from_str(&raw)?);
+}
 
 fn main() {
+    let config_path = "config.toml";
+    let config = match load_config(&config_path) {
+
+    };
+
+
     let now = Local::now();
     let now_formatted = format!("{}", now.format("%Y-%m-%d_%H:%M:%S"));
 
