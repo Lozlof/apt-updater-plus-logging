@@ -1,1 +1,1 @@
-# apt-updater-plus-logging-
+# apt-updater-plus-logging
