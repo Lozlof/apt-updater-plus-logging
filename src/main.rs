@@ -81,6 +81,8 @@ fn main() {
         exit(1);
     }
 
+    let mut success_count: Vec<String> = Vec::new();
+
     let apt_update_message = {
         let start = "START - APT-GET UPDATE";
         let end = "END - APT-GET UPDATE";
@@ -133,6 +135,7 @@ fn main() {
 
         let update_status = {
             if output.status.success() {
+                success_count.push("update".to_string());
                 "Status: SUCCESS".to_string()
             } else {
                 format!("Status: FAILED: {:?}", output.status)
@@ -194,6 +197,7 @@ fn main() {
 
         let update_status = {
             if output.status.success() {
+                success_count.push("upgrade".to_string());
                 "Status: SUCCESS".to_string()
             } else {
                 format!("Status: FAILED: {:?}", output.status)
@@ -255,6 +259,7 @@ fn main() {
 
         let update_status = {
             if output.status.success() {
+                success_count.push("full-upgrade".to_string());
                 "Status: SUCCESS".to_string()
             } else {
                 format!("Status: FAILED: {:?}", output.status)
@@ -316,6 +321,7 @@ fn main() {
 
         let update_status = {
             if output.status.success() {
+                success_count.push("autoremove".to_string());
                 "Status: SUCCESS".to_string()
             } else {
                 format!("Status: FAILED: {:?}", output.status)
@@ -377,6 +383,7 @@ fn main() {
 
         let update_status = {
             if output.status.success() {
+                success_count.push("autoclean".to_string());
                 "Status: SUCCESS".to_string()
             } else {
                 format!("Status: FAILED: {:?}", output.status)
@@ -412,8 +419,7 @@ fn main() {
             .join("\n");
             
             if last_20.is_empty() {
-                logger::error!("{}\n{:?}\n{}", start, "stdout is empty", end);
-                exit(1);
+                "STDOUT is empty".to_string()
             } else {
                 format!("STDOUT last 20 lines:\n{}", last_20)
             }
@@ -438,6 +444,7 @@ fn main() {
 
         let update_status = {
             if output.status.success() {
+                success_count.push("clean".to_string());
                 "Status: SUCCESS".to_string()
             } else {
                 format!("Status: FAILED: {:?}", output.status)
@@ -447,9 +454,18 @@ fn main() {
         format!("{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}", start, "", update_status, "", stdout_last_20_lines, "", stderr_last_20_lines, "", end)
     };    
 
+    let success_message = {
+        if success_count.len() == 6 {
+            format!("{}\n{:?}", "All commands ran successfully:", success_count)
+        } else {
+            format!("{}\n{}\n{:?}", "Some commands failed,", "These are the commands that were successful:", success_count)
+        }
+    };
 
-    let message = format!("\n{}{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}", 
-        "Update / upgrade report for ", config.machine_name, 
+    let message = format!("\n{}\n{}\n{}{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}", 
+        "BEGIN",
+        "",
+        "(update / upgrade / clean) report for: ", config.machine_name, 
         "", 
         apt_update_message, 
         "", 
@@ -462,9 +478,13 @@ fn main() {
         apt_autoclean_message,
         "",
         apt_clean_message,
+        "",
+        success_message,
+        "",
+        "FINISHED"
     );
 
-    println!("{}", message);
+    logger::info!("{}", message);
 
     sleep(Duration::from_secs(30));
     exit(0);
