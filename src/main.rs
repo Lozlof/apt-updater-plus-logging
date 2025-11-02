@@ -264,9 +264,207 @@ fn main() {
         format!("{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}", start, "", update_status, "", stdout_last_20_lines, "", stderr_last_20_lines, "", end)
     };
 
+    let apt_autoremove_message = {
+        let start = "START - APT-GET AUTOREMOVE";
+        let end = "END - APT-GET AUTOREMOVE";
+        let output = match Command::new("/usr/bin/apt-get").args(["autoremove", "-y"]).output() {
+            Ok(output) => output,
+            Err(error) => {
+                logger::error!("{}\n{:?}\n{}", start, error, end);
+                exit(1);
+            }
+        };
 
-    let message = format!("\n{}{}\n{}\n{}\n{}\n{}\n{}\n{}", "Update / upgrade report for ", config.machine_name, "", apt_update_message, "", apt_upgrade_message, "", apt_full_upgrade_message);
-    logger::info!("{}", message);
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        let stderr = String::from_utf8_lossy(&output.stderr);
+
+        let stdout_last_20_lines = {
+            let last_20 = stdout
+            .lines()
+            .rev()
+            .take(20)
+            .collect::<Vec<_>>()
+            .into_iter()
+            .rev()
+            .collect::<Vec<_>>()
+            .join("\n");
+            
+            if last_20.is_empty() {
+                logger::error!("{}\n{:?}\n{}", start, "stdout is empty", end);
+                exit(1);
+            } else {
+                format!("STDOUT last 20 lines:\n{}", last_20)
+            }
+        };
+        let stderr_last_20_lines = {
+            let last_20 = stderr
+            .lines()
+            .rev()
+            .take(20)
+            .collect::<Vec<_>>()
+            .into_iter()
+            .rev()
+            .collect::<Vec<_>>()
+            .join("\n"); 
+
+            if last_20.is_empty() {
+                "STDERR is empty".to_string()
+            } else {
+                format!("STDERR last 20 lines:\n{}", last_20)
+            }
+        };
+
+        let update_status = {
+            if output.status.success() {
+                "Status: SUCCESS".to_string()
+            } else {
+                format!("Status: FAILED: {:?}", output.status)
+            }
+        };
+
+        format!("{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}", start, "", update_status, "", stdout_last_20_lines, "", stderr_last_20_lines, "", end)
+    };
+
+    let apt_autoclean_message = {
+        let start = "START - APT-GET AUTOCLEAN";
+        let end = "END - APT-GET AUTOCLEAN";
+        let output = match Command::new("/usr/bin/apt-get").args(["autoclean", "-y"]).output() {
+            Ok(output) => output,
+            Err(error) => {
+                logger::error!("{}\n{:?}\n{}", start, error, end);
+                exit(1);
+            }
+        };
+
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        let stderr = String::from_utf8_lossy(&output.stderr);
+
+        let stdout_last_20_lines = {
+            let last_20 = stdout
+            .lines()
+            .rev()
+            .take(20)
+            .collect::<Vec<_>>()
+            .into_iter()
+            .rev()
+            .collect::<Vec<_>>()
+            .join("\n");
+            
+            if last_20.is_empty() {
+                logger::error!("{}\n{:?}\n{}", start, "stdout is empty", end);
+                exit(1);
+            } else {
+                format!("STDOUT last 20 lines:\n{}", last_20)
+            }
+        };
+        let stderr_last_20_lines = {
+            let last_20 = stderr
+            .lines()
+            .rev()
+            .take(20)
+            .collect::<Vec<_>>()
+            .into_iter()
+            .rev()
+            .collect::<Vec<_>>()
+            .join("\n"); 
+
+            if last_20.is_empty() {
+                "STDERR is empty".to_string()
+            } else {
+                format!("STDERR last 20 lines:\n{}", last_20)
+            }
+        };
+
+        let update_status = {
+            if output.status.success() {
+                "Status: SUCCESS".to_string()
+            } else {
+                format!("Status: FAILED: {:?}", output.status)
+            }
+        };
+
+        format!("{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}", start, "", update_status, "", stdout_last_20_lines, "", stderr_last_20_lines, "", end)
+    };
+
+    let apt_clean_message = {
+        let start = "START - APT-GET CLEAN";
+        let end = "END - APT-GET CLEAN";
+        let output = match Command::new("/usr/bin/apt-get").args(["clean", "-y"]).output() {
+            Ok(output) => output,
+            Err(error) => {
+                logger::error!("{}\n{:?}\n{}", start, error, end);
+                exit(1);
+            }
+        };
+
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        let stderr = String::from_utf8_lossy(&output.stderr);
+
+        let stdout_last_20_lines = {
+            let last_20 = stdout
+            .lines()
+            .rev()
+            .take(20)
+            .collect::<Vec<_>>()
+            .into_iter()
+            .rev()
+            .collect::<Vec<_>>()
+            .join("\n");
+            
+            if last_20.is_empty() {
+                logger::error!("{}\n{:?}\n{}", start, "stdout is empty", end);
+                exit(1);
+            } else {
+                format!("STDOUT last 20 lines:\n{}", last_20)
+            }
+        };
+        let stderr_last_20_lines = {
+            let last_20 = stderr
+            .lines()
+            .rev()
+            .take(20)
+            .collect::<Vec<_>>()
+            .into_iter()
+            .rev()
+            .collect::<Vec<_>>()
+            .join("\n"); 
+
+            if last_20.is_empty() {
+                "STDERR is empty".to_string()
+            } else {
+                format!("STDERR last 20 lines:\n{}", last_20)
+            }
+        };
+
+        let update_status = {
+            if output.status.success() {
+                "Status: SUCCESS".to_string()
+            } else {
+                format!("Status: FAILED: {:?}", output.status)
+            }
+        };
+
+        format!("{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}", start, "", update_status, "", stdout_last_20_lines, "", stderr_last_20_lines, "", end)
+    };    
+
+
+    let message = format!("\n{}{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}", 
+        "Update / upgrade report for ", config.machine_name, 
+        "", 
+        apt_update_message, 
+        "", 
+        apt_upgrade_message, 
+        "", 
+        apt_full_upgrade_message,
+        "",
+        apt_autoremove_message,
+        "",
+        apt_autoclean_message,
+        "",
+        apt_clean_message,
+    );
+
+    println!("{}", message);
 
     sleep(Duration::from_secs(30));
     exit(0);
