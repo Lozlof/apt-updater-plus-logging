@@ -265,7 +265,8 @@ fn main() {
     };
 
 
-    println!("{}{}\n{}\n{}\n{}\n{}\n{}", "Update / upgrade report for ", config.machine_name, apt_update_message, "", apt_upgrade_message, "", apt_full_upgrade_message);
+    let message = format!("\n{}{}\n{}\n{}\n{}\n{}\n{}\n{}", "Update / upgrade report for ", config.machine_name, "", apt_update_message, "", apt_upgrade_message, "", apt_full_upgrade_message);
+    logger::info!("{}", message);
 
     sleep(Duration::from_secs(30));
     exit(0);
