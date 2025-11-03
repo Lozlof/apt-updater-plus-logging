@@ -1,6 +1,6 @@
 # apt-updater-plus-logging
 #### /target is committed on purpose
-## config.toml
+## config.toml (put in root)
 ```toml
 terminal_logs = true
 terminal_log_lvl = "error"
