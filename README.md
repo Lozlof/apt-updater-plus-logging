@@ -1,4 +1,5 @@
 # apt-updater-plus-logging
+#### /target is committed on purpose
 ## config.toml
 ```toml
 terminal_logs = true
@@ -17,3 +18,4 @@ machine_name = "testing-01"
 type = "JsonText"
 field = "text"
 ```
+#### See: https://crates.io/crates/better-logger for more details
