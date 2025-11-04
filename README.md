@@ -1,5 +1,5 @@
 # apt-updater-plus-logging
-#### This build is committed
+#### This build is committed:
 ```bash
 cargo +stable build --release --target x86_64-unknown-linux-gnu
 ```     
