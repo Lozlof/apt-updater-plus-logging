@@ -1,5 +1,8 @@
 # apt-updater-plus-logging
-#### /target is committed on purpose
+#### This build is committed
+```bash
+cargo +stable build --release --target x86_64-unknown-linux-gnu
+```     
 ## config.toml (put in root)
 ```toml
 terminal_logs = true

@@ -1,2 +1,7 @@
-# /target
 config.toml
+/target/CACHEDIR.TAG
+/target/.rustc_info.json
+/target/release
+/target/x86_64-unknown-linux-gnu/CACHEDIR.TAG
+/target/x86_64-unknown-linux-gnu/release/*
+!/target/x86_64-unknown-linux-gnu/release/apt-updater-plus-logging
