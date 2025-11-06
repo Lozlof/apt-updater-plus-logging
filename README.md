@@ -1,5 +1,7 @@
 # apt-updater-plus-logging
-#### This executable is committed:
+### This executable is committed:
+- I do this so I don't have to build on the production VM.
+- You should clean and rebuild your own executable.
 ```bash
 cargo +stable build --release --target x86_64-unknown-linux-gnu
 ```     
