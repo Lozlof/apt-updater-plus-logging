@@ -1,11 +1,8 @@
 # apt-updater-plus-logging
-### This executable is committed:
-- I do this so I don't have to build on the production VM.
-- You should clean and rebuild your own executable.
-```bash
-cargo +stable build --release --target x86_64-unknown-linux-gnu
-```     
-## config.toml (put in root)
+#### Runs all the apt update / upgrade / clean commands with built in logging
+#### See: https://crates.io/crates/better-logger for more details
+## config.toml
+#### Put in same directory as the executable
 ```toml
 terminal_logs = true
 terminal_log_lvl = "error"
@@ -23,4 +20,9 @@ machine_name = "testing-01"
 type = "JsonText"
 field = "text"
 ```
-#### See: https://crates.io/crates/better-logger for more details
+### This executable is committed:
+- I do this so I don't have to build on the production VM.
+- You should clean and rebuild your own executable.
+```bash
+cargo +stable build --release --target x86_64-unknown-linux-gnu
+```     
